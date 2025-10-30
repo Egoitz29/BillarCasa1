@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bola Fantasma
   m_EditorClassIdentifier: 
   nombre: Bola Fantasma
-  icono: {fileID: 0}
+  icono: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   precioCompra: 9
   precioVenta: 6
   descripcion: 'Permite atravesar una banda una sola vez sin perder velocidad.

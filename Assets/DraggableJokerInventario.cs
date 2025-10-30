@@ -1,46 +1,40 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class DraggableJokerInventario : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [HideInInspector] public Joker1 jokerData;
-
+    public Joker1 jokerData;
     private CanvasGroup canvasGroup;
-    private RectTransform rectTransform;
-    private Transform originalParent;
-    private Canvas mainCanvas;
+    private Transform parentBeforeDrag;
 
-    private void Awake()
+    void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
-
-        mainCanvas = GetComponentInParent<Canvas>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        originalParent = transform.parent;
-        transform.SetParent(mainCanvas.transform);
+        parentBeforeDrag = transform.parent;
+        transform.SetParent(transform.root); // lo lleva al nivel del Canvas
         canvasGroup.blocksRaycasts = false;
-        canvasGroup.alpha = 0.8f;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.position = eventData.position;
+        transform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        canvasGroup.blocksRaycasts = true;
-        canvasGroup.alpha = 1f;
+        // Si no cae en un nuevo slot, volver a su posición original
+        if (transform.parent == transform.root)
+        {
+            transform.SetParent(parentBeforeDrag);
+            transform.localPosition = Vector3.zero;
+        }
 
-        // Si no se soltó sobre una zona válida, vuelve al sitio original
-        transform.SetParent(originalParent);
-        rectTransform.localPosition = Vector3.zero;
+        canvasGroup.blocksRaycasts = true;
     }
 }

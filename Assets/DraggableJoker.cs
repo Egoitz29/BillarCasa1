@@ -39,7 +39,6 @@ public class DraggableJoker : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
 
-        // Detectar si se soltó sobre un slot de inventario
         GameObject dropZone = eventData.pointerCurrentRaycast.gameObject;
 
         if (dropZone != null && dropZone.CompareTag("SlotInventario"))
@@ -48,14 +47,15 @@ public class DraggableJoker : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             if (inventario != null)
             {
                 inventario.ComprarJoker(jokerData);
-                Destroy(gameObject); // elimina de la tienda
+                Destroy(gameObject); // Elimina el comodín de la tienda
             }
         }
         else
         {
-            // Si no se soltó en zona válida, vuelve al sitio original
+            // Si no se soltó en zona válida, vuelve a su posición original
             transform.SetParent(originalParent);
             rectTransform.localPosition = Vector3.zero;
         }
     }
+
 }
